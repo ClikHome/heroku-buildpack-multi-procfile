@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 indent() {
     sed -u 's/^/      /'
 }
@@ -8,18 +10,11 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 
-PROCFILE=$(cat ${ENV_DIR}/PROCFILE)
-
-if [[ -z "${PROCFILE}" ]]; then
-    echo "PROCFILE was not set. Aborting" | indent
-    exit 1
-fi
-
-cp ${BUILD_DIR}/${PROCFILE} ${BUILD_DIR}/Procfile
+${BUILD_DIR}/init_script/heroku_deploy.py
 
 if ! [ $? ]; then
-    echo "FAILED to copy a Procfile" | indent
+    echo "init_script/heroku_deploy.py FAILED" | indent
     exit 1
 fi
 
-echo "Copied ${PROCFILE} as Procfile successfully" | indent
+echo "init_script/heroku_deploy.py finished successfully" | indent
