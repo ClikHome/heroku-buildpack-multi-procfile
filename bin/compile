@@ -10,8 +10,13 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 
+echo 'ENV_DIR:'
+ls -la ${ENV_DIR}
+
 env
-${BUILD_DIR}/init_script/heroku_deploy.py
+
+python2.7 -v -c 'import sys; print sys.path'
+python2.7 -v ${BUILD_DIR}/init_script/heroku_deploy.py
 
 if ! [ $? ]; then
     echo "init_script/heroku_deploy.py FAILED" | indent
